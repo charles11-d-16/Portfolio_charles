@@ -55,13 +55,23 @@ body, html {
 .shape--t21 { --size: clamp(180px, 16vw, 300px); --t: -121px;   --l: -125px; }
 
 /* Custom color for the selected box */
-.shape.shape--br7,
-.shape.shape--t19 {
-    background: linear-gradient(135deg, #f3c900 0%, #ffd300 55%, #d7af00 100%);
+/* .shape.shape--br8, */
+.shape.shape--t20 {
+    background: linear-gradient(135deg, #caa600 0%, #d8b200 55%, #a88400 100%);
     box-shadow: 0 22px 50px rgba(0, 0, 0, 0.65),
                 inset 0 0 0 1px rgba(0, 0, 0, 0.18),
                 inset 10px 10px 18px rgba(255, 255, 255, 0.05),
                 inset -12px -12px 22px rgba(0, 0, 0, 0.22);
+    overflow: hidden;
+}
+
+.shape.shape--t20::before {
+    content: '';
+    position: absolute;
+    inset: 10%;
+    background: url('law.png') center / contain no-repeat;
+    opacity: 0.9;
+    pointer-events: none;
 }
 
 .shape--br4 { --size: clamp(180px, 16vw, 300px); --b: 140px;   --r: 135px; }
