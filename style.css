@@ -45,13 +45,13 @@ body, html {
 /* Positioning (matches the "corner clusters" look) */
 .shape--tl1 { --size: clamp(320px, 34vw, 520px); --t: -220px; --l: -320px; }
 .shape--tl2 { --size: clamp(240px, 26vw, 420px); --t: 40px;   --l: -220px; }
-.shape--tl3 { --size: clamp(200px, 20vw, 340px); --t: 220px;  --l: -40px; }
-.shape--tl4 { --size: clamp(170px, 16vw, 280px); --t: 60px;   --l: 180px; }
+.shape--tl3 { --size: clamp(200px, 20vw, 340px); --t: 270px;  --l: -60px; }
+.shape--tl4 { --size: clamp(170px, 16vw, 170px); --t: -20px;   --l: 260px; }
+.shape--tl5 { --size: clamp(170px, 16vw, 170px); --t: 180px;   --l: 100px; }
 
-.shape--br1 { --size: clamp(340px, 36vw, 560px); --b: -260px; --r: -340px; }
-.shape--br2 { --size: clamp(250px, 26vw, 440px); --b: 40px;   --r: -220px; }
 .shape--br3 { --size: clamp(210px, 20vw, 360px); --b: 240px;  --r: -60px; }
 .shape--br4 { --size: clamp(180px, 16vw, 300px); --b: 80px;   --r: 200px; }
+.shape--tl6 { --size: clamp(170px, 16vw, 170px); --t: 635px;   --r: 460px; }
 
 .shape--r1  { --size: clamp(220px, 22vw, 380px); --t: 36%;    --r: -200px; }
 
