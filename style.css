@@ -36,7 +36,8 @@ body, html {
     transform: rotate(45deg); /* Turns squares into diamonds */
     
     /* This shadow creates the 'depth' seen in your image */
-    box-shadow: -15px 15px 30px rgba(0, 0, 0, 0.7),
+    box-shadow: 0 22px 50px rgba(0, 0, 0, 0.65),
+                0 0 32px rgba(0, 0, 0, 0.55),
                 inset 1px -1px 2px rgba(255, 255, 255, 0.08);
     
     border-radius: 4px; /* Optional: very slight rounding for a premium feel */
@@ -44,17 +45,22 @@ body, html {
 }
 
 /* Positioning (matches the "corner clusters" look) */
-.shape--tl1 { --size: clamp(320px, 34vw, 520px); --t: -220px; --l: -320px; }
-.shape--tl2 { --size: clamp(240px, 26vw, 420px); --t: 40px;   --l: -220px; }
-.shape--tl3 { --size: clamp(200px, 20vw, 340px); --t: 270px;  --l: -60px; }
-.shape--tl4 { --size: clamp(170px, 16vw, 170px); --t: -20px;   --l: 260px; }
-.shape--tl5 { --size: clamp(170px, 16vw, 170px); --t: 180px;   --l: 100px; }
+/* .shape--tl4 { --size: clamp(170px, 16vw, 170px); --t: -20px;   --l: 260px; }
+.shape--tl5 { --size: clamp(170px, 16vw, 170px); --t: 180px;   --l: 100px; } */
+.shape--t16 { --size: clamp(180px, 16vw, 300px); --t: 400px;   --l: -125px; }
+.shape--t17 { --size: clamp(180px, 16vw, 300px); --t: 140px;   --l: 135px; }
+.shape--t18 { --size: clamp(180px, 16vw, 300px); --t: -121px;   --l: 390px; }
+.shape--t19 { --size: clamp(180px, 16vw, 300px); --t: -121px;   --l: 135px; }
+.shape--t20 { --size: clamp(180px, 16vw, 300px); --t: 140px;   --l: -125px; }
+.shape--t21 { --size: clamp(180px, 16vw, 300px); --t: -121px;   --l: -125px; }
 
-.shape--br3 { --size: clamp(210px, 20vw, 360px); --b: 240px;  --r: -60px; }
-.shape--br4 { --size: clamp(180px, 16vw, 300px); --b: 80px;   --r: 200px; }
-.shape--tl6 { --size: clamp(170px, 16vw, 170px); --t: 635px;   --r: 460px; }
+.shape--br4 { --size: clamp(180px, 16vw, 300px); --b: 140px;   --r: 135px; }
+.shape--br5 { --size: clamp(180px, 16vw, 300px); --b: 400px;   --r:-125px; }
+.shape--br6 { --size: clamp(180px, 16vw, 300px); --b: -121px;   --r: 390px; }
+.shape--br7 { --size: clamp(180px, 16vw, 300px); --b: -121px;   --r: 135px; }
+.shape--br8 { --size: clamp(180px, 16vw, 300px); --b: 140px;   --r: -125px; }
+.shape--br9 { --size: clamp(180px, 16vw, 300px); --b: -121px;   --r: -125px; }
 
-.shape--r1  { --size: clamp(220px, 22vw, 380px); --t: 36%;    --r: -200px; }
 
 /* Optional: Add a subtle vignette to mimic the corners of the image */
 .background-container::after {
