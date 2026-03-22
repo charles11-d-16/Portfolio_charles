@@ -81,6 +81,20 @@ body, html {
 .shape--br8 { --size: clamp(180px, 16vw, 300px); --b: 140px;   --r: -125px; }
 .shape--br9 { --size: clamp(180px, 16vw, 300px); --b: -121px;   --r: -125px; }
 
+/* Image fill (no margin) */
+.shape.shape--t18,
+.shape.shape--br4 {
+    overflow: hidden;
+}
+.shape.shape--t18::before,
+.shape.shape--br4::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('lawlaw.png') center / cover no-repeat;
+    pointer-events: none;
+}
+
 
 /* Optional: Add a subtle vignette to mimic the corners of the image */
 .background-container::after {
