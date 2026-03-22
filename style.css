@@ -267,11 +267,116 @@ body, html {
 }
 
 .hero__social-link {
+    position: relative;
     width: 30px;
     height: 30px;
     display: grid;
     place-items: center;
     text-decoration: none;
+    cursor: pointer;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    font: inherit;
+    appearance: none;
+}
+
+.hero__social-link[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 12px);
+    transform: translate(-50%, 8px);
+    background: #fff;
+    color: #111;
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    max-width: 320px;
+    white-space: nowrap;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
+    z-index: 5;
+}
+
+.hero__social-link:hover::after,
+.hero__social-link:focus-visible::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+}
+
+/* Email/Phone tooltip with clickable copy icon */
+.hero__social-item {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+}
+
+.hero__tooltip {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 12px);
+    transform: translate(-50%, 8px);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    color: #111;
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    max-width: 360px;
+    white-space: nowrap;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
+    z-index: 6;
+}
+
+.hero__tooltip-text {
+    display: inline-block;
+}
+
+.hero__tooltip-copy-btn {
+    width: 18px;
+    height: 18px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: #111;
+    cursor: pointer;
+    opacity: 0.85;
+}
+
+.hero__tooltip-copy-btn svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+.hero__tooltip-copy-btn:hover,
+.hero__tooltip-copy-btn:focus-visible {
+    opacity: 1;
+}
+
+.hero__social-item:hover .hero__tooltip,
+.hero__social-item:focus-within .hero__tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
 }
 
 .hero__social-link svg {
