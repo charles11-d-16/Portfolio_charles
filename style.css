@@ -400,6 +400,12 @@ body, html {
     fill: currentColor;
 }
 
+.text-highlight {
+    color: #ffd300;
+    font-weight: 700;
+}
+
+
 .hero__tooltip-copy-btn:hover,
 .hero__tooltip-copy-btn:focus-visible {
     opacity: 1;
@@ -450,10 +456,17 @@ body, html {
 }
 
 /* Skills Gallery */
-.hero__page--developer {
+.hero__page--developer{
     flex-direction: column;
     justify-content: flex-start;
     padding-top: 175px;
+    padding-bottom: 80px;
+    gap: 40px;
+}
+.hero__page--graphic-design {
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 230px;
     padding-bottom: 80px;
     gap: 40px;
 }
