@@ -55,8 +55,7 @@ body, html {
 .shape--t20 { --size: clamp(180px, 16vw, 300px); --t: 140px;   --l: -125px; }
 .shape--t21 { --size: clamp(180px, 16vw, 300px); --t: -121px;   --l: -125px; }
 
-/* Custom color for the selected box */
-/* .shape.shape--br8, */
+
 .shape.shape--t20 {
     background: linear-gradient(135deg, #caa600 0%, #d8b200 55%, #a88400 100%);
     box-shadow: 0 22px 50px rgba(0, 0, 0, 0.65),
@@ -534,4 +533,104 @@ body, html {
     opacity: 1;
     visibility: visible;
     transform: translate(-50%, 0);
+}
+
+/* Experience */
+.hero__page--experience {
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 230px;
+    padding-bottom: 80px;
+}
+
+.hero__card--experience {
+    width: 100%;
+}
+
+.experience__carousel {
+    width: 90%;
+    max-width: min(820px, calc(100vw - 80px));
+    margin-top: 18px;
+    position: relative;
+}
+
+.experience__viewport {
+    --edge-fade: 56px;
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 14px var(--edge-fade) 18px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge legacy */
+    scroll-behavior: smooth;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--edge-fade), #000 calc(100% - var(--edge-fade)), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, #000 var(--edge-fade), #000 calc(100% - var(--edge-fade)), transparent 100%);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
+.experience__viewport::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.experience__viewport:focus-visible {
+    outline: 2px solid rgba(255, 211, 0, 0.55);
+    outline-offset: 4px;
+    border-radius: 18px;
+}
+
+.experience__item {
+    flex: 0 0 clamp(260px, 46vw, 360px);
+    scroll-snap-align: center;
+    border-radius: 18px;
+    padding: 18px 18px 20px;
+    background: rgba(24, 24, 24, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(2px);
+    min-height: 190px;
+    opacity: 0.62;
+    transform: scale(0.985);
+    transition: opacity 220ms ease, transform 220ms ease, border-color 220ms ease;
+    will-change: transform;
+}
+
+.experience__item.is-active {
+    opacity: 1;
+    border-color: #ffd300;
+    transform: translateY(-6px) scale(1);
+}
+
+.experience__item-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.experience__item-date {
+    margin: 8px 0 0;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.experience__item-text {
+    margin: 12px 0 0;
+    font-size: 15px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.68);
+}
+
+@media (max-width: 640px) {
+    .hero__page--experience {
+        padding-top: 200px;
+    }
+
+    .experience__viewport {
+        --edge-fade: 42px;
+    }
 }
