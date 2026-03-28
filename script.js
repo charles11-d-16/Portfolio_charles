@@ -58,6 +58,8 @@
             let resumeTimerId = null;
             let rafId = null;
             let activeIndex = 0;
+            const isHobbies = viewport.classList.contains('hobbies__viewport') || Boolean(viewport.closest('.hero__page--hobbies'));
+            const allowAuto = !isHobbies;
 
         const updateActive = () => {
             const center = viewport.scrollLeft + viewport.clientWidth / 2;
@@ -95,6 +97,7 @@
 
         const startAuto = () => {
             stopAuto();
+            if (!allowAuto) return;
             if (viewport.matches(':hover')) return;
             autoTimerId = window.setInterval(() => {
                 const nextIndex = (activeIndex + 1) % items.length;
@@ -104,6 +107,13 @@
 
         const pauseAuto = (resumeAfterMs = 4200) => {
             stopAuto();
+            if (!allowAuto) {
+                if (resumeTimerId !== null) {
+                    window.clearTimeout(resumeTimerId);
+                    resumeTimerId = null;
+                }
+                return;
+            }
             if (resumeTimerId !== null) window.clearTimeout(resumeTimerId);
             resumeTimerId = window.setTimeout(() => startAuto(), resumeAfterMs);
         };
@@ -126,6 +136,41 @@
 
         viewport.addEventListener('pointerenter', () => stopAuto(), { passive: true });
         viewport.addEventListener('pointerleave', () => startAuto(), { passive: true });
+
+        if (isHobbies) {
+            const carousel = viewport.closest('[data-carousel="hobbies"]');
+            const prevBtn = carousel?.querySelector('[data-hobbies-prev]');
+            const nextBtn = carousel?.querySelector('[data-hobbies-next]');
+
+            const go = (delta) => {
+                updateActive();
+                const nextIndex = (activeIndex + delta + items.length) % items.length;
+                scrollToIndex(nextIndex, 'smooth');
+            };
+
+            const focusViewport = () => {
+                if (viewport.tabIndex < 0) return;
+                try {
+                    viewport.focus({ preventScroll: true });
+                } catch {
+                    viewport.focus();
+                }
+            };
+
+            if (prevBtn) prevBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                stopAuto();
+                focusViewport();
+                go(-1);
+            });
+
+            if (nextBtn) nextBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                stopAuto();
+                focusViewport();
+                go(1);
+            });
+        }
 
         if (!autoOnly) {
             viewport.addEventListener('wheel', (event) => {
@@ -151,15 +196,23 @@
             return Boolean(target.closest('button, a, input, textarea, select, label'));
         };
 
-        viewport.addEventListener('pointerdown', (event) => {
-            if (event.button !== 0) return;
-            if (dragPointerId !== null) return;
-            if (isInteractiveTarget(event.target)) return;
+            viewport.addEventListener('pointerdown', (event) => {
+                if (event.button !== 0) return;
+                if (dragPointerId !== null) return;
+                if (isInteractiveTarget(event.target)) return;
 
-            dragPointerId = event.pointerId;
-            dragStartX = event.clientX;
-            dragStartScrollLeft = viewport.scrollLeft;
-            didDrag = false;
+                if (viewport.tabIndex >= 0 && document.activeElement !== viewport) {
+                    try {
+                        viewport.focus({ preventScroll: true });
+                    } catch {
+                        viewport.focus();
+                    }
+                }
+
+                dragPointerId = event.pointerId;
+                dragStartX = event.clientX;
+                dragStartScrollLeft = viewport.scrollLeft;
+                didDrag = false;
 
             stopAuto();
             viewport.classList.add('is-dragging');
