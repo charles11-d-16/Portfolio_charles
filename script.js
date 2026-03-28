@@ -404,8 +404,133 @@
             return;
         }
 
+        const prefersReducedMotion = (() => {
+            try {
+                return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            } catch {
+                return false;
+            }
+        })();
+
+        let scrollAnimRafId = null;
+        let scrollAnimStart = 0;
+        let scrollAnimFrom = 0;
+        let scrollAnimTo = 0;
+        let scrollAnimDuration = 0;
+        let scrollAnimEase = (t) => t;
+        let scrollAnimOnComplete = null;
+
+        const cancelScrollAnim = () => {
+            if (scrollAnimRafId !== null) {
+                window.cancelAnimationFrame(scrollAnimRafId);
+                scrollAnimRafId = null;
+            }
+            scrollAnimOnComplete = null;
+            scroller.classList.remove('is-scroll-animating');
+        };
+
+        const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+        const easeInOutCubic = (t) => (t < 0.5
+            ? 4 * t * t * t
+            : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+        const easeOutBounce = (t) => {
+            const n1 = 7.5625;
+            const d1 = 2.75;
+
+            if (t < 1 / d1) return n1 * t * t;
+
+            if (t < 2 / d1) {
+                const t2 = t - 1.5 / d1;
+                return n1 * t2 * t2 + 0.75;
+            }
+
+            if (t < 2.5 / d1) {
+                const t2 = t - 2.25 / d1;
+                return n1 * t2 * t2 + 0.9375;
+            }
+
+            const t2 = t - 2.625 / d1;
+            return n1 * t2 * t2 + 0.984375;
+        };
+
+        const animateScrollTop = (targetTop, { duration = 720, easing = easeInOutCubic, onComplete = null } = {}) => {
+            cancelScrollAnim();
+
+            const maxScrollTop = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+            const clampedTop = clamp(targetTop, 0, maxScrollTop);
+
+            if (prefersReducedMotion) {
+                scroller.scrollTop = clampedTop;
+                return;
+            }
+
+            scrollAnimStart = performance.now();
+            scrollAnimFrom = scroller.scrollTop;
+            scrollAnimTo = clampedTop;
+            scrollAnimDuration = Math.max(0, duration);
+            scrollAnimEase = easing;
+            scrollAnimOnComplete = typeof onComplete === 'function' ? onComplete : null;
+            scroller.classList.add('is-scroll-animating');
+
+            const step = (now) => {
+                const elapsed = now - scrollAnimStart;
+                const rawT = scrollAnimDuration === 0 ? 1 : clamp(elapsed / scrollAnimDuration, 0, 1);
+                const easedT = scrollAnimEase(rawT);
+                scroller.scrollTop = scrollAnimFrom + (scrollAnimTo - scrollAnimFrom) * easedT;
+
+                if (rawT < 1) {
+                    scrollAnimRafId = window.requestAnimationFrame(step);
+                } else {
+                    scrollAnimRafId = null;
+                    scroller.classList.remove('is-scroll-animating');
+                    const done = scrollAnimOnComplete;
+                    scrollAnimOnComplete = null;
+                    if (done) done();
+                }
+            };
+
+            scrollAnimRafId = window.requestAnimationFrame(step);
+        };
+
+        const bounceStartIndex = (() => {
+            const idx = sections.findIndex((section) => section.id === 'projects' || section.classList.contains('hero__page--projects'));
+            return idx >= 0 ? idx : sections.length;
+        })();
+
+        const scrollToSectionIndex = (index) => {
+            const section = sections[index];
+            if (!section) return;
+
+            const targetTop = section.offsetTop;
+            const isBounce = index >= bounceStartIndex;
+
+            if (!isBounce) {
+                animateScrollTop(targetTop, { duration: 720, easing: easeInOutCubic });
+                return;
+            }
+
+            const maxScrollTop = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+            const direction = targetTop >= scroller.scrollTop ? 1 : -1;
+            const overshootPx = Math.min(76, Math.max(42, scroller.clientHeight * 0.07));
+            const overshootTop = clamp(targetTop + direction * overshootPx, 0, maxScrollTop);
+
+            if (overshootTop === targetTop) {
+                animateScrollTop(targetTop, { duration: 920, easing: easeOutBounce });
+                return;
+            }
+
+            animateScrollTop(overshootTop, {
+                duration: 620,
+                easing: easeInOutCubic,
+                onComplete: () => animateScrollTop(targetTop, { duration: 520, easing: easeOutBounce }),
+            });
+        };
+
         let rafId = null;
         let activeIndex = 0;
+        let lastCurrentIndex = -1;
 
         const getActiveIndex = () => {
             const center = scroller.scrollTop + scroller.clientHeight / 2;
@@ -429,6 +554,16 @@
             activeIndex = getActiveIndex();
             btnUp.hidden = activeIndex === 0;
             btnDown.hidden = activeIndex === sections.length - 1;
+
+            if (activeIndex !== lastCurrentIndex) {
+                const prev = sections[lastCurrentIndex];
+                if (prev) prev.classList.remove('is-current');
+
+                const next = sections[activeIndex];
+                if (next) next.classList.add('is-current');
+
+                lastCurrentIndex = activeIndex;
+            }
 
             if (topNavLinks.length > 0) {
                 const activeSection = sections[activeIndex];
@@ -465,16 +600,42 @@
         btnUp.addEventListener('click', () => {
             update();
             const nextIndex = Math.max(0, activeIndex - 1);
-            sections[nextIndex]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            scrollToSectionIndex(nextIndex);
         });
 
         btnDown.addEventListener('click', () => {
             update();
             const nextIndex = Math.min(sections.length - 1, activeIndex + 1);
-            sections[nextIndex]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            scrollToSectionIndex(nextIndex);
+        });
+
+        topNavLinks.forEach((link) => {
+            link.addEventListener('click', (event) => {
+                const href = link.getAttribute('href');
+                if (!href || !href.startsWith('#')) return;
+
+                const target = document.getElementById(href.slice(1));
+                if (!target) return;
+
+                event.preventDefault();
+
+                const page = target.closest('.hero__page') || target;
+                const index = sections.indexOf(page);
+                if (index >= 0) scrollToSectionIndex(index);
+                else animateScrollTop(page.offsetTop);
+
+                try {
+                    history.pushState(null, '', href);
+                } catch {
+                    window.location.hash = href;
+                }
+            });
         });
 
         scroller.addEventListener('scroll', scheduleUpdate, { passive: true });
+        scroller.addEventListener('wheel', cancelScrollAnim, { passive: true });
+        scroller.addEventListener('touchstart', cancelScrollAnim, { passive: true });
+        scroller.addEventListener('pointerdown', cancelScrollAnim, { passive: true });
         window.addEventListener('resize', scheduleUpdate, { passive: true });
         window.addEventListener('hashchange', scheduleUpdate, { passive: true });
 
