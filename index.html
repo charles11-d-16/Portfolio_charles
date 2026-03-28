@@ -259,9 +259,12 @@
 
 	                            <div class="projects__carousel" data-carousel="projects" aria-label="Projects carousel">
 	                                <div class="projects__viewport" tabindex="0" role="group" aria-label="Projects">
-	                                    <article class="experience__item project-card">
-	                                        <h3 class="experience__item-title">Project Title 01</h3>
-	                                        <p class="experience__item-date">Web Application</p>
+		                                    <article class="experience__item project-card">
+		                                        <div class="project__header">
+		                                            <h3 class="experience__item-title">Project Title 01</h3>
+		                                            <button class="project__view-btn" type="button" data-project-modal="project-01" data-project-gallery="project-01-gallery" aria-haspopup="dialog">View Project</button>
+		                                        </div>
+		                                        <p class="experience__item-date">Web Application</p>
 	                                        <p class="experience__item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 	                                        <div class="project__stack" aria-label="Tools used">
 	                                            <div class="project__chip">
@@ -283,9 +286,12 @@
 	                                        </div>
 	                                    </article>
 
-	                                    <article class="experience__item project-card">
-	                                        <h3 class="experience__item-title">Project Title 02</h3>
-	                                        <p class="experience__item-date">Portfolio Website</p>
+		                                    <article class="experience__item project-card">
+		                                        <div class="project__header">
+		                                            <h3 class="experience__item-title">Project Title 02</h3>
+		                                            <button class="project__view-btn" type="button" data-project-modal="project-02" data-project-gallery="project-02-gallery" aria-haspopup="dialog">View Project</button>
+		                                        </div>
+		                                        <p class="experience__item-date">Portfolio Website</p>
 	                                        <p class="experience__item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis ipsum suspendisse ultrices gravida, risus commodo viverra.</p>
 	                                        <div class="project__stack" aria-label="Tools used">
 	                                            <div class="project__chip">
@@ -307,9 +313,12 @@
 	                                        </div>
 	                                    </article>
 
-	                                    <article class="experience__item project-card">
-	                                        <h3 class="experience__item-title">Project Title 03</h3>
-	                                        <p class="experience__item-date">Admin Dashboard</p>
+		                                    <article class="experience__item project-card">
+		                                        <div class="project__header">
+		                                            <h3 class="experience__item-title">Project Title 03</h3>
+		                                            <button class="project__view-btn" type="button" data-project-modal="project-03" data-project-gallery="project-03-gallery" aria-haspopup="dialog">View Project</button>
+		                                        </div>
+		                                        <p class="experience__item-date">Admin Dashboard</p>
 	                                        <p class="experience__item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation.</p>
 	                                        <div class="project__stack" aria-label="Tools used">
 	                                            <div class="project__chip">
@@ -331,9 +340,12 @@
 	                                        </div>
 	                                    </article>
 
-	                                    <article class="experience__item project-card">
-	                                        <h3 class="experience__item-title">Project Title 04</h3>
-	                                        <p class="experience__item-date">API Service</p>
+		                                    <article class="experience__item project-card">
+		                                        <div class="project__header">
+		                                            <h3 class="experience__item-title">Project Title 04</h3>
+		                                            <button class="project__view-btn" type="button">View Project</button>
+		                                        </div>
+		                                        <p class="experience__item-date">API Service</p>
 	                                        <p class="experience__item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate.</p>
 	                                        <div class="project__stack" aria-label="Tools used">
 	                                            <div class="project__chip">
@@ -355,9 +367,12 @@
 	                                        </div>
 	                                    </article>
 
-	                                    <article class="experience__item project-card">
-	                                        <h3 class="experience__item-title">Project Title 05</h3>
-	                                        <p class="experience__item-date">Database System</p>
+		                                    <article class="experience__item project-card">
+		                                        <div class="project__header">
+		                                            <h3 class="experience__item-title">Project Title 05</h3>
+		                                            <button class="project__view-btn" type="button">View Project</button>
+		                                        </div>
+		                                        <p class="experience__item-date">Database System</p>
 	                                        <p class="experience__item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Excepteur sint occaecat cupidatat non proident.</p>
 	                                        <div class="project__stack" aria-label="Tools used">
 	                                            <div class="project__chip">
@@ -385,6 +400,39 @@
 	                </section>
 	            </div>
 	        </main>
+
+		    <script type="application/json" id="project-01-gallery">
+		        [
+		            "grapic/FBIG_MemeBugs.jpg",
+		            "grapic/LinkedIn_Cybersecurity.jpg",
+		            "grapic/Maintenance.jpg",
+		            "grapic/Meme.jpg"
+		        ]
+		    </script>
+
+		    <script type="application/json" id="project-02-gallery">
+		        [
+		            "client_inquiry/Screenshot 2026-03-28 104932.png"
+		        ]
+		    </script>
+
+		    <script type="application/json" id="project-03-gallery">
+		        [
+		            "leads/Screenshot 2026-03-28 105209.png"
+		        ]
+		    </script>
+
+		    <div class="project-modal" id="project-modal" hidden>
+		        <div class="project-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="project-modal-title">
+		            <button class="project-modal__close" type="button" data-project-modal-close aria-label="Close modal">×</button>
+		            <div class="project-modal__header">
+		                <h2 class="project-modal__title" id="project-modal-title">Project</h2>
+		            </div>
+		            <div class="project-modal__body">
+		                <div class="project-modal__gallery" id="project-modal-gallery" aria-label="Project images"></div>
+		            </div>
+		        </div>
+		    </div>
 
 		    <div class="section-nav" data-section-nav aria-label="Section navigation">
 		        <button class="section-nav__btn" type="button" data-nav-up aria-label="Previous section" title="Previous section">

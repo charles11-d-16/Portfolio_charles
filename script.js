@@ -374,6 +374,102 @@
         update();
     };
 
+    const setupProjectModal = () => {
+        const modal = document.getElementById('project-modal');
+        const titleEl = document.getElementById('project-modal-title');
+        const galleryEl = document.getElementById('project-modal-gallery');
+        if (!modal || !titleEl || !galleryEl) return;
+
+        const closeBtn = modal.querySelector('[data-project-modal-close]');
+        const triggers = Array.from(document.querySelectorAll('.project__view-btn[data-project-modal]'));
+        if (triggers.length === 0) return;
+
+        let lastTrigger = null;
+
+        const isFocusVisible = (el) => {
+            try {
+                return el instanceof HTMLElement && el.matches(':focus-visible');
+            } catch {
+                return false;
+            }
+        };
+
+        const parseGalleryJson = (galleryId) => {
+            if (!galleryId) return [];
+            const node = document.getElementById(galleryId);
+            if (!node) return [];
+
+            try {
+                const parsed = JSON.parse(node.textContent || '[]');
+                return Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+            } catch {
+                return [];
+            }
+        };
+
+        const setImages = (paths) => {
+            galleryEl.replaceChildren();
+
+            paths.forEach((src) => {
+                const img = document.createElement('img');
+                img.src = encodeURI(src);
+                img.alt = '';
+                img.loading = 'lazy';
+                galleryEl.appendChild(img);
+            });
+        };
+
+        const openModal = (trigger, restoreFocus = false) => {
+            const card = trigger.closest('.project-card') || trigger.closest('.experience__item');
+            const titleText = card?.querySelector('.experience__item-title')?.textContent?.trim() || 'Project';
+            const galleryId = trigger.getAttribute('data-project-gallery') || '';
+            const images = parseGalleryJson(galleryId);
+
+            titleEl.textContent = titleText;
+            setImages(images);
+
+            modal.classList.toggle('project-modal--single', images.length <= 1);
+            lastTrigger = restoreFocus ? trigger : null;
+            document.documentElement.classList.add('is-project-modal-open');
+            modal.hidden = false;
+
+            window.setTimeout(() => {
+                if (closeBtn instanceof HTMLElement) closeBtn.focus();
+            }, 0);
+        };
+
+        const closeModal = () => {
+            modal.hidden = true;
+            document.documentElement.classList.remove('is-project-modal-open');
+            galleryEl.replaceChildren();
+            modal.classList.remove('project-modal--single');
+
+            if (lastTrigger instanceof HTMLElement) lastTrigger.focus();
+            lastTrigger = null;
+        };
+
+        triggers.forEach((btn) => {
+            btn.addEventListener('click', (event) => {
+                event.preventDefault();
+                openModal(btn, isFocusVisible(btn));
+            });
+        });
+
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) closeModal();
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (modal.hidden) return;
+            if (event.key !== 'Escape') return;
+            event.preventDefault();
+            closeModal();
+        });
+    };
+
     setupExperienceCarousel();
     setupSectionNav();
+    setupProjectModal();
 })();
