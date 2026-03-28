@@ -127,7 +127,9 @@ body, html {
 
 .site-nav__link {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-family: "Lucida Console", Monaco, monospace;
     color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
@@ -135,6 +137,19 @@ body, html {
     letter-spacing: 0.2px;
     padding-bottom: 6px;
     transition: color 160ms ease;
+}
+
+.site-nav__icon {
+    width: 22px;
+    height: 22px;
+    display: none;
+    flex: 0 0 auto;
+}
+
+.site-nav__icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 
 .site-nav__link::after {
@@ -169,6 +184,74 @@ body, html {
 .site-nav__link.is-active::after {
     transform: scaleX(1);
     opacity: 1;
+}
+
+@media (max-width: 640px) {
+    .site-nav {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: calc(10px + env(safe-area-inset-top, 0px));
+        display: flex;
+        justify-content: center;
+        padding: 0 12px;
+        pointer-events: none;
+    }
+
+    .site-nav__links {
+        width: min(380px, calc(100vw - 24px));
+        display: flex;
+        justify-content: space-between;
+        gap: 0;
+        padding: 10px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(12, 12, 12, 0.38);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.58),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        pointer-events: auto;
+    }
+
+    .site-nav__icon {
+        display: block;
+    }
+
+    .site-nav__text {
+        display: none;
+    }
+
+    .site-nav__link {
+        width: 46px;
+        height: 46px;
+        gap: 0;
+        padding: 0;
+        display: grid;
+        place-items: center;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .site-nav__link::after {
+        left: 50%;
+        bottom: 6px;
+        width: 26px;
+        transform: translateX(-50%) scaleX(0);
+        transform-origin: center;
+    }
+
+    .site-nav__link:focus-visible::after {
+        transform: translateX(-50%) scaleX(1);
+    }
+
+    .site-nav__link.is-active::after {
+        transform: translateX(-50%) scaleX(1);
+    }
 }
 
 .hero {
@@ -270,6 +353,22 @@ body, html {
     gap: 34px;
     transform: translate(clamp(-160px, 1vw, 20px), 0);
     max-width: min(750px, calc(100vw - 80px));
+}
+
+@media (max-width: 640px) {
+    .hero__page--home .hero__card {
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        transform: none;
+        text-align: center;
+        max-width: min(520px, calc(100vw - 48px));
+    }
+
+    .hero__page--home .hero__hint,
+    .hero__page--home .hero__social {
+        justify-content: center;
+    }
 }
 
 .hero__avatar {
@@ -548,6 +647,26 @@ body, html {
     align-items: center;
 }
 
+@media (max-width: 640px) {
+    .hero__page--developer .hero__skills-gallery {
+        padding: 0 18px;
+    }
+
+    .hero__page--developer .hero__skills-container {
+        width: 100%;
+        max-width: 420px;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px 12px;
+    }
+
+    .hero__page--developer .hero__skill-item {
+        width: 34px;
+        height: 34px;
+        flex: 0 0 42px;
+    }
+}
+
 .hero__skill-item {
     position: relative;
     width: 40px;
@@ -820,6 +939,11 @@ body, html {
     position: relative;
 }
 
+.hero__page--experience .experience__carousel {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .hero__page--hobbies .experience__carousel {
     width: 100%;
     max-width: min(820px, calc(100vw - 80px));
@@ -833,7 +957,7 @@ body, html {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 5;
+    z-index: 10;
     width: 54px;
     height: 54px;
     display: grid;
@@ -849,6 +973,7 @@ body, html {
     cursor: pointer;
     opacity: 0.9;
     transition: transform 160ms ease, opacity 160ms ease;
+    text-shadow: 0 10px 22px rgba(0, 0, 0, 0.8);
 }
 
 .hobbies__nav--prev {
@@ -868,6 +993,12 @@ body, html {
 .hobbies__nav:active {
     transform: translateY(-50%) scale(0.98);
     opacity: 0.95;
+}
+
+@media (max-width: 640px) {
+    .hobbies__nav {
+        display: none;
+    }
 }
 
 .hero__page--projects .projects__carousel {
@@ -951,6 +1082,27 @@ body, html {
     align-items: center;
     justify-content: center;
     text-align: center;
+}
+
+@media (max-width: 640px) {
+    .hero__page--hobbies .experience__viewport {
+        --hobby-gap: 18px;
+        padding: 0;
+        gap: var(--hobby-gap);
+    }
+
+    .hero__page--hobbies .experience__item {
+        flex: 0 0 calc(100% - var(--hobby-gap));
+        max-width: 100%;
+    }
+
+    .hero__page--hobbies .hobbies__item-desc {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 8px;
+        box-sizing: border-box;
+        overflow-wrap: anywhere;
+    }
 }
 
 .hero__page--hobbies .experience__item.is-active {
@@ -1290,11 +1442,11 @@ body, html {
 }
 
 .section-nav__btn[data-nav-up] {
-    top: var(--section-nav-offset);
+    top: calc(var(--section-nav-offset) + env(safe-area-inset-top, 0px));
 }
 
 .section-nav__btn[data-nav-down] {
-    bottom: var(--section-nav-offset);
+    bottom: calc(var(--section-nav-offset) + env(safe-area-inset-bottom, 0px));
 }
 
 .section-nav__btn:hover,
@@ -1324,6 +1476,7 @@ body, html {
     transform-origin: 50% 50%;
     backface-visibility: hidden;
     animation: sectionNavWiggle 1.2s ease-in-out infinite;
+    filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.75));
 }
 
 .section-nav__btn:hover .section-nav__icon,
@@ -1350,6 +1503,12 @@ body, html {
 }
 
 @media (max-width: 640px) {
+    .section-nav {
+        display: none;
+    }
+}
+
+@media (max-width: 640px) {
     .hero__page--experience,
     .hero__page--projects,
     .hero__page--contact {
@@ -1359,6 +1518,17 @@ body, html {
     .experience__viewport,
     .projects__viewport {
         --edge-fade: 42px;
+    }
+
+    .hero__page--experience .experience__viewport {
+        --edge-fade: 8px;
+        -webkit-mask-image: none;
+        mask-image: none;
+    }
+
+    .hero__page--experience .hero__section-title {
+        width: 100%;
+        text-align: center;
     }
 }
 
@@ -1373,9 +1543,29 @@ body, html {
         grid-template-columns: 1fr;
     }
 
+    .hero__page--hobbies .hero__section-title {
+        width: 100%;
+        text-align: center;
+    }
+
+    .hero__page--hobbies .hobbies__item-desc {
+        margin: 12px 0 18px;
+    }
+
     .projects__viewport {
         grid-template-columns: 1fr;
         gap: 18px;
+        justify-items: center;
+    }
+
+    .hero__page--projects .hero__content {
+        width: 100%;
+        max-width: min(560px, calc(100vw - 24px));
+        margin: 0 auto;
+    }
+
+    .hero__page--projects .hero__section-title {
+        text-align: center;
     }
 
     .hobbies__nav--prev {
