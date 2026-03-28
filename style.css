@@ -539,7 +539,7 @@ body, html {
 .hero__page--experience {
     flex-direction: column;
     justify-content: flex-start;
-    padding-top: 230px;
+    padding-top: 200px;
     padding-bottom: 80px;
 }
 
@@ -565,12 +565,22 @@ body, html {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE/Edge legacy */
     scroll-behavior: smooth;
+    cursor: grab;
     -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--edge-fade), #000 calc(100% - var(--edge-fade)), transparent 100%);
     mask-image: linear-gradient(to right, transparent 0, #000 var(--edge-fade), #000 calc(100% - var(--edge-fade)), transparent 100%);
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
+}
+
+.experience__viewport.is-dragging {
+    cursor: grabbing;
+}
+
+.experience__viewport.is-dragging,
+.experience__viewport.is-dragging * {
+    user-select: none;
 }
 
 .experience__viewport::-webkit-scrollbar {
@@ -623,6 +633,62 @@ body, html {
     font-size: 15px;
     line-height: 1.55;
     color: rgba(255, 255, 255, 0.68);
+}
+
+.section-nav {
+    --section-nav-offset: 18px;
+    position: fixed;
+    inset: 0;
+    z-index: 46;
+    pointer-events: none;
+}
+
+.section-nav__btn {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 46px;
+    height: 46px;
+    border-radius: 0;
+    border: 0;
+    background: transparent;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    pointer-events: auto;
+    touch-action: manipulation;
+    transition: transform 160ms ease, opacity 160ms ease;
+}
+
+.section-nav__btn[data-nav-up] {
+    top: var(--section-nav-offset);
+}
+
+.section-nav__btn[data-nav-down] {
+    bottom: var(--section-nav-offset);
+}
+
+.section-nav__btn:hover,
+.section-nav__btn:focus-visible {
+    transform: translate(-50%, -1px);
+    outline: none;
+    opacity: 0.95;
+}
+
+.section-nav__btn[hidden] {
+    display: none;
+}
+
+.section-nav__icon {
+    width: 46px;
+    height: 46px;
+    display: block;
+    opacity: 1;
+}
+
+.section-nav__btn:hover .section-nav__icon,
+.section-nav__btn:focus-visible .section-nav__icon {
+    opacity: 1;
 }
 
 @media (max-width: 640px) {
