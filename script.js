@@ -47,16 +47,17 @@
     });
 
     const setupExperienceCarousel = () => {
-        const viewport = document.querySelector('.experience__viewport');
-        if (!viewport) return;
+        const viewports = Array.from(document.querySelectorAll('.experience__viewport'));
+        if (viewports.length === 0) return;
 
-        const items = Array.from(viewport.querySelectorAll('.experience__item'));
-        if (items.length === 0) return;
+        viewports.forEach((viewport) => {
+            const items = Array.from(viewport.querySelectorAll('.experience__item'));
+            if (items.length === 0) return;
 
-        let autoTimerId = null;
-        let resumeTimerId = null;
-        let rafId = null;
-        let activeIndex = 0;
+            let autoTimerId = null;
+            let resumeTimerId = null;
+            let rafId = null;
+            let activeIndex = 0;
 
         const updateActive = () => {
             const center = viewport.scrollLeft + viewport.clientWidth / 2;
@@ -299,9 +300,10 @@
             else startAuto();
         }, { passive: true });
 
-        updateActive();
-        scrollToIndex(0, 'auto');
-        startAuto();
+            updateActive();
+            scrollToIndex(0, 'auto');
+            startAuto();
+        });
     };
 
     const setupSectionNav = () => {
