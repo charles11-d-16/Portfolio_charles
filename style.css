@@ -679,16 +679,45 @@ body, html {
     display: none;
 }
 
+.section-nav__icon-wrap {
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    animation: sectionNavBounce 1.6s ease-in-out infinite;
+}
+
 .section-nav__icon {
     width: 46px;
     height: 46px;
     display: block;
     opacity: 1;
+    transform-origin: 50% 50%;
+    backface-visibility: hidden;
+    animation: sectionNavWiggle 1.2s ease-in-out infinite;
 }
 
 .section-nav__btn:hover .section-nav__icon,
 .section-nav__btn:focus-visible .section-nav__icon {
     opacity: 1;
+    animation-play-state: paused;
+}
+
+@keyframes sectionNavWiggle {
+    0%, 100% { transform: perspective(260px) rotateY(-18deg); }
+    50% { transform: perspective(260px) rotateY(18deg); }
+}
+
+@keyframes sectionNavBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .section-nav__icon-wrap,
+    .section-nav__icon {
+        animation: none !important;
+    }
 }
 
 @media (max-width: 640px) {
