@@ -31,15 +31,16 @@
 
         <header class="site-nav" aria-label="Primary">
             <nav class="site-nav__links">
-                <a class="site-nav__link is-active" href="#home">Home</a>
-                <a class="site-nav__link" href="#services">Services</a>
+                <a class="site-nav__link" href="#home">Home</a>
+                <a class="site-nav__link" href="#experience">Experience</a>
+                <a class="site-nav__link" href="#projects">Projects</a>
                 <a class="site-nav__link" href="#contact">Contact</a>
             </nav>
         </header>
 
-        <main id="home" class="hero">
+        <main class="hero">
             <div class="hero__pages" aria-label="Sections">
-                <section class="hero__page hero__page--home" aria-label="Home">
+                <section id="home" class="hero__page hero__page--home" aria-label="Home">
                     <section class="hero__card" aria-label="Home">
                 <div class="hero__avatar" aria-hidden="true">
                     <img class="hero__avatar-img" src="ako.png" alt="">
@@ -209,7 +210,7 @@
                     </section>
                 </section>
 
-                <section class="hero__page hero__page--experience" aria-label="Experience">
+                <section id="experience" class="hero__page hero__page--experience" aria-label="Experience">
                     <section class="hero__card hero__card--experience" aria-label="My Work Experience">
                         <div class="hero__content">
                             <div class="hero__section-title">My <span class="text-highlight">Work Experience</span></div>
@@ -252,7 +253,7 @@
 	                    </section>
 	                </section>
 
-	                <section class="hero__page hero__page--projects" aria-label="Projects">
+	                <section id="projects" class="hero__page hero__page--projects" aria-label="Projects">
 	                    <section class="hero__card hero__card--projects" aria-label="Projects">
 	                        <div class="hero__content">
 	                            <div class="hero__section-title">My <span class="text-highlight">Projects</span></div>
@@ -395,6 +396,72 @@
 	                                    </article>
 	                                </div>
 	                            </div>
+	                        </div>
+	                    </section>
+	                </section>
+
+	                <section id="hobbies" class="hero__page hero__page--hobbies" aria-label="Hobbies">
+	                    <section class="hero__card hero__card--hobbies" aria-label="Hobbies">
+	                        <div class="hero__content">
+	                            <div class="hero__section-title">Other activities <span class="text-highlight">I Love </span></div>
+
+	                            <div class="experience__carousel hobbies__carousel" data-carousel="hobbies" aria-label="Hobbies carousel">
+	                                <div class="experience__viewport hobbies__viewport" data-auto-only role="group" aria-label="Hobbies">
+	                                    <article class="experience__item hobbies__item">
+	                                        <h3 class="hobbies__item-title">Rock</h3>
+                                            <p class="hobbies__item-desc">“I love music of all genres, but rock has a special place in my heart.”</p><br>
+	                                        <img class="hobbies__item-gif" src="hobbies/rock.gif" alt="Rock hobby gif">
+	                                    </article>
+
+	                                    <article class="experience__item hobbies__item">
+	                                        <h3 class="hobbies__item-title">Travel</h3>
+                                            <p class="hobbies__item-desc">“Long roads, delicious food, and breathtaking views—Yeaah that life.”</p><br>
+	                                        <img class="hobbies__item-gif" src="hobbies/travel.gif" alt="Travel hobby gif">
+	                                       
+	                                    </article>
+
+	                                    <article class="experience__item hobbies__item">
+	                                        <h3 class="hobbies__item-title">Electronics</h3>
+                                            <p class="hobbies__item-desc">“Crafting or building something incredible—that’s awesome. Maybe in another universe, I’m an inventor.”</p><br>
+	                                        <img class="hobbies__item-gif" src="hobbies/electronics.gif" alt="Electronics hobby gif">
+	                                       
+	                                    </article>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </section>
+	                </section>
+
+	                <section id="contact" class="hero__page hero__page--contact" aria-label="Contact">
+	                    <section class="hero__card hero__card--contact" aria-label="Contact">
+	                        <div class="hero__content">
+	                            <div class="hero__section-title">Get in <span class="text-highlight">touch</span></div>
+	                            <p class="hero__subtitle hero__subtitle--para contact__intro">
+	                                “Feel free to send me a message—I’ll do my best to reply as soon as I can.”
+	                            </p>
+
+	                            <form class="contact__form" aria-label="Contact form">
+	                                <div class="contact__row">
+	                                    <div class="contact__field">
+	                                        <label class="contact__label" for="contact-name">Name</label>
+	                                        <input class="contact__input" id="contact-name" name="name" type="text" autocomplete="name" placeholder="Who are you?" required>
+	                                    </div>
+
+	                                    <div class="contact__field">
+	                                        <label class="contact__label" for="contact-email">Email</label>
+	                                        <input class="contact__input" id="contact-email" name="email" type="email" autocomplete="email" placeholder="Enter your email" required>
+	                                    </div>
+	                                </div>
+
+	                                <div class="contact__field">
+	                                    <label class="contact__label" for="contact-message">What are you contacting me for?</label>
+	                                    <textarea class="contact__textarea" id="contact-message" name="message" rows="5" placeholder="Write your message..." required></textarea>
+	                                </div>
+
+	                                <div class="contact__actions">
+	                                    <button class="contact__btn" type="button">Send</button>
+	                                </div>
+	                            </form>
 	                        </div>
 	                    </section>
 	                </section>

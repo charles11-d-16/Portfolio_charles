@@ -150,12 +150,10 @@ body, html {
     transition: transform 180ms ease, opacity 180ms ease;
 }
 
-.site-nav__link:hover,
 .site-nav__link:focus-visible {
     color: #ffd300;
 }
 
-.site-nav__link:hover::after,
 .site-nav__link:focus-visible::after {
     transform: scaleX(1);
     opacity: 1;
@@ -558,9 +556,147 @@ body, html {
     padding-bottom: 80px;
 }
 
+.hero__page--hobbies {
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 200px;
+    padding-bottom: 80px;
+}
+
+.hero__page--contact {
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 140px;
+    padding-bottom: 80px;
+}
+
+.hero__card--contact {
+    width: 100%;
+    max-width: min(720px, calc(100vw - 80px));
+    transform: none;
+    display: block;
+    border-radius: 24px;
+    padding: 22px 22px 24px;
+    background: rgba(24, 24, 24, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(2px);
+}
+
+.contact__intro {
+    margin-top: 10px;
+    max-width: 52ch;
+}
+
+.contact__form {
+    margin-top: 20px;
+    display: grid;
+    gap: 18px;
+    width: 100%;
+    max-width: 100%;
+    margin-inline: 0;
+}
+
+.contact__row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    min-width: 0;
+}
+
+.contact__field {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+}
+
+.contact__label {
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.contact__input,
+.contact__textarea {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.88);
+    padding: 12px 14px;
+    font: inherit;
+    outline: none;
+    transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.contact__input:hover,
+.contact__textarea:hover {
+    border-color: rgba(255, 211, 0, 0.45);
+    background: rgba(0, 0, 0, 0.26);
+}
+
+.contact__textarea {
+    resize: vertical;
+    min-height: 140px;
+}
+
+.contact__input::placeholder,
+.contact__textarea::placeholder {
+    color: rgba(255, 255, 255, 0.42);
+}
+
+.contact__input:focus,
+.contact__textarea:focus {
+    border-color: rgba(255, 211, 0, 0.75);
+    box-shadow: 0 0 0 3px rgba(255, 211, 0, 0.22);
+    background: rgba(0, 0, 0, 0.28);
+}
+
+.contact__actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.contact__btn {
+    appearance: none;
+    border: 0;
+    border-radius: 12px;
+    padding: 12px 18px;
+    font: inherit;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    background: rgba(255, 255, 255, 0.9);
+    color: rgba(0, 0, 0, 0.86);
+    cursor: pointer;
+    transition: transform 160ms ease, background 160ms ease, opacity 160ms ease;
+}
+
+.contact__btn:hover {
+    transform: translateY(-1px);
+    background: #ffd300;
+}
+
+.contact__btn:active {
+    transform: translateY(0);
+    opacity: 0.9;
+}
+
+.contact__btn:focus-visible {
+    outline: 2px solid rgba(255, 211, 0, 0.75);
+    outline-offset: 3px;
+}
+
 .hero__card--projects {
     width: 100%;
     max-width: min(1400px, calc(100vw - 80px));
+    transform: none;
+    display: block;
+}
+
+.hero__card--hobbies {
+    width: 100%;
+    max-width: min(700px, calc(100vw - 80px));
     transform: none;
     display: block;
 }
@@ -571,6 +707,11 @@ body, html {
     max-width: min(820px, calc(100vw - 80px));
     margin-top: 18px;
     position: relative;
+}
+
+.hero__page--hobbies .experience__carousel {
+    width: 100%;
+    max-width: min(820px, calc(100vw - 80px));
 }
 
 .hero__page--projects .projects__carousel {
@@ -618,12 +759,69 @@ body, html {
     border-radius: 18px;
 }
 
+.hero__page--hobbies .experience__viewport {
+    --edge-fade: 0px;
+    padding: 0;
+    gap: 0;
+    overflow-x: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-mask-image: none;
+    mask-image: none;
+}
+
 .projects__viewport {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 40px;
     padding: 26px 0 0;
     align-items: start;
+}
+
+.hero__page--hobbies .experience__item {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    min-height: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    backdrop-filter: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+    scroll-snap-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero__page--hobbies .experience__item.is-active {
+    transform: none;
+    border-color: transparent;
+    opacity: 1;
+}
+
+.hobbies__item-title {
+    display: none;
+}
+
+.hobbies__item-gif {
+    width: min(240px, 70vw);
+    max-height: min(24vh, 220px);
+    object-fit: contain;
+    display: block;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.hobbies__item-desc {
+    margin: 12px 0 0;
+    width: min(560px, 86vw);
+    font-size: 15px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.68);
 }
 
 .hero__page--projects .experience__item {
@@ -997,7 +1195,8 @@ body, html {
 
 @media (max-width: 640px) {
     .hero__page--experience,
-    .hero__page--projects {
+    .hero__page--projects,
+    .hero__page--contact {
         padding-top: 200px;
     }
 
@@ -1014,6 +1213,10 @@ body, html {
 }
 
 @media (max-width: 640px) {
+    .contact__row {
+        grid-template-columns: 1fr;
+    }
+
     .projects__viewport {
         grid-template-columns: 1fr;
         gap: 18px;

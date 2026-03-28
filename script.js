@@ -116,31 +116,35 @@
             });
         };
 
+        const autoOnly = viewport.hasAttribute('data-auto-only');
+        let lastDragEndAt = 0;
+
         viewport.addEventListener('scroll', () => {
             scheduleActiveUpdate();
-            pauseAuto();
+            if (!autoOnly) pauseAuto();
         }, { passive: true });
 
         viewport.addEventListener('pointerenter', () => stopAuto(), { passive: true });
         viewport.addEventListener('pointerleave', () => startAuto(), { passive: true });
 
-        viewport.addEventListener('wheel', (event) => {
-            const maxScrollLeft = viewport.scrollWidth - viewport.clientWidth;
-            if (maxScrollLeft <= 1) return;
+        if (!autoOnly) {
+            viewport.addEventListener('wheel', (event) => {
+                const maxScrollLeft = viewport.scrollWidth - viewport.clientWidth;
+                if (maxScrollLeft <= 1) return;
 
-            // Translate vertical wheel into horizontal scroll while hovering the carousel.
-            if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
-                event.preventDefault();
-                viewport.scrollLeft += event.deltaY;
-            }
-        }, { passive: false });
+                // Translate vertical wheel into horizontal scroll while hovering the carousel.
+                if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
+                    event.preventDefault();
+                    viewport.scrollLeft += event.deltaY;
+                }
+            }, { passive: false });
+        }
 
         // Drag-to-scroll with mouse / touch.
         let dragPointerId = null;
         let dragStartX = 0;
         let dragStartScrollLeft = 0;
         let didDrag = false;
-        let lastDragEndAt = 0;
 
         const isInteractiveTarget = (target) => {
             if (!(target instanceof Element)) return false;
@@ -188,6 +192,25 @@
         viewport.addEventListener('pointerup', endDrag);
         viewport.addEventListener('pointercancel', endDrag);
         viewport.addEventListener('lostpointercapture', endDrag);
+
+        viewport.addEventListener('keydown', (event) => {
+            if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+            if (isInteractiveTarget(event.target)) return;
+
+            const maxScrollLeft = viewport.scrollWidth - viewport.clientWidth;
+            if (maxScrollLeft <= 1) return;
+
+            event.preventDefault();
+            updateActive();
+
+            const direction = event.key === 'ArrowRight' ? 1 : -1;
+            const nextIndex = Math.max(0, Math.min(items.length - 1, activeIndex + direction));
+            if (nextIndex === activeIndex) return;
+
+            stopAuto();
+            scrollToIndex(nextIndex, 'smooth');
+            pauseAuto(4200);
+        });
 
         // "Read more..." modal
         const modal = document.getElementById('experience-modal');
@@ -311,6 +334,13 @@
         const nav = document.querySelector('[data-section-nav]');
         if (!scroller || !nav) return;
 
+        const topNavLinks = Array.from(document.querySelectorAll('.site-nav__link[href^="#"]'));
+        const linkByHash = new Map(
+            topNavLinks
+                .map((link) => [link.getAttribute('href'), link])
+                .filter(([hash]) => typeof hash === 'string' && hash.length > 1),
+        );
+
         const btnUp = nav.querySelector('[data-nav-up]');
         const btnDown = nav.querySelector('[data-nav-down]');
         if (!btnUp || !btnDown) return;
@@ -346,6 +376,29 @@
             activeIndex = getActiveIndex();
             btnUp.hidden = activeIndex === 0;
             btnDown.hidden = activeIndex === sections.length - 1;
+
+            if (topNavLinks.length > 0) {
+                const activeSection = sections[activeIndex];
+                const currentHash = window.location.hash;
+
+                let activeHash = null;
+                if (currentHash && linkByHash.has(currentHash)) {
+                    const target = document.getElementById(currentHash.slice(1));
+                    if (target && activeSection && activeSection.contains(target)) {
+                        activeHash = currentHash;
+                    }
+                }
+
+                if (!activeHash && activeSection?.id) {
+                    const sectionHash = `#${activeSection.id}`;
+                    if (linkByHash.has(sectionHash)) activeHash = sectionHash;
+                }
+
+                topNavLinks.forEach((link) => {
+                    const href = link.getAttribute('href');
+                    link.classList.toggle('is-active', !!activeHash && href === activeHash);
+                });
+            }
         };
 
         const scheduleUpdate = () => {
@@ -370,6 +423,7 @@
 
         scroller.addEventListener('scroll', scheduleUpdate, { passive: true });
         window.addEventListener('resize', scheduleUpdate, { passive: true });
+        window.addEventListener('hashchange', scheduleUpdate, { passive: true });
 
         update();
     };
