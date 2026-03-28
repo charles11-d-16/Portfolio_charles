@@ -36,7 +36,10 @@ body, html {
     right: var(--r, auto);
     bottom: var(--b, auto);
     background: linear-gradient(135deg, #2a2a2a 0%, #1c1c1c 55%, #121212 100%);
-    transform: rotate(45deg); /* Turns squares into diamonds */
+    --shape-scale: 1;
+    --shape-shift-x: 0px;
+    --shape-shift-y: 0px;
+    transform: rotate(45deg) scale(var(--shape-scale)) translate(var(--shape-shift-x), var(--shape-shift-y)); /* Turns squares into diamonds */
     
     /* This shadow creates the 'depth' seen in your image */
     box-shadow: 0 22px 50px rgba(0, 0, 0, 0.65),
@@ -45,6 +48,39 @@ body, html {
     
     border-radius: 4px; /* Optional: very slight rounding for a premium feel */
     z-index: 1;
+}
+
+@media (max-width: 640px) {
+    .shape {
+        --shape-scale: 0.55;
+    }
+
+    .shape--t16,
+    .shape--t17,
+    .shape--br4,
+    .shape--br5 {
+        display: none;
+    }
+
+    .shape--t16,
+    .shape--t17,
+    .shape--t18,
+    .shape--t19,
+    .shape--t20,
+    .shape--t21 {
+        --shape-shift-x: clamp(-84px, -14vw, -56px);
+        --shape-shift-y: clamp(-220px, -18vh, -150px);
+    }
+
+    .shape--br4,
+    .shape--br5,
+    .shape--br6,
+    .shape--br7,
+    .shape--br8,
+    .shape--br9 {
+        --shape-shift-x: clamp(56px, 14vw, 84px);
+        --shape-shift-y: clamp(150px, 18vh, 220px);
+    }
 }
 
 /* Positioning (matches the "corner clusters" look) */
