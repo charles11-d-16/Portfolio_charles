@@ -969,8 +969,8 @@ body, html {
 
 .experience__carousel,
 .projects__carousel {
-    width: 90%;
-    max-width: min(820px, calc(100vw - 80px));
+    width: 100%;
+    max-width: min(735px, calc(100vw - 80px));
     margin-top: 18px;
     position: relative;
 }
