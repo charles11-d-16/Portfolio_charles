@@ -30,7 +30,8 @@ if (String(process.env.SERVE_FRONTEND || '').toLowerCase() === 'true') {
   // Serve the static portfolio from the repo root while preventing exposure of backend source.
   app.use('/backend', (req, res) => res.status(404).json({ error: 'Not Found' }));
 
-  const repoRoot = fileURLToPath(new URL('../../..', import.meta.url));
+  // backend/src/app.js -> repo root is ../../
+  const repoRoot = fileURLToPath(new URL('../../', import.meta.url));
   app.use(express.static(repoRoot));
 }
 
