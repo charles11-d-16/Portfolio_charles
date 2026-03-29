@@ -787,7 +787,7 @@
             toastTimerId = window.setTimeout(() => {
                 toastTimerId = null;
                 hideToast();
-            }, 2400);
+            }, 4000);
         };
 
         if (toast) {
