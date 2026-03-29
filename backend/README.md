@@ -11,6 +11,7 @@ Stores contact form messages in MongoDB.
 Notes:
 - `MONGO_URI` should be your Mongo host (example: `mongodb://127.0.0.1:27017`).
 - Make sure MongoDB is running locally, or use your Atlas connection string.
+- If you set `SERVE_FRONTEND=true`, this backend will also serve the portfolio frontend from the repo root (so the frontend URL is the same as the backend URL).
 
 Frontend:
 - When your site is opened on `localhost` / `127.0.0.1`, the form sends to `http://<host>:5000/api/contact`.

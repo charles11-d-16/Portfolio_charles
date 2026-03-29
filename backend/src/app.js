@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express from 'express';
+import { fileURLToPath } from 'node:url';
 
 import contactRoutes from './routes/contactRoutes.js';
 
@@ -24,6 +25,14 @@ app.use(cors({
 
 app.get('/health', (req, res) => res.json({ ok: true }));
 app.use('/api/contact', contactRoutes);
+
+if (String(process.env.SERVE_FRONTEND || '').toLowerCase() === 'true') {
+  // Serve the static portfolio from the repo root while preventing exposure of backend source.
+  app.use('/backend', (req, res) => res.status(404).json({ error: 'Not Found' }));
+
+  const repoRoot = fileURLToPath(new URL('../../..', import.meta.url));
+  app.use(express.static(repoRoot));
+}
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Not Found' });
