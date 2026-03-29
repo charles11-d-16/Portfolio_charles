@@ -737,7 +737,129 @@
         });
     };
 
+    const setupContactForm = () => {
+        const form = document.querySelector('.contact__form');
+        if (!form) return;
+
+        const button = form.querySelector('.contact__btn');
+        if (!(button instanceof HTMLButtonElement)) return;
+
+        const originalLabel = button.textContent || 'Send';
+        let sending = false;
+        const toast = document.getElementById('contact-toast');
+        let toastTimerId = null;
+        let toastHideTimerId = null;
+
+        const hideToast = () => {
+            if (!toast) return;
+            if (toastTimerId !== null) {
+                window.clearTimeout(toastTimerId);
+                toastTimerId = null;
+            }
+            if (toastHideTimerId !== null) {
+                window.clearTimeout(toastHideTimerId);
+                toastHideTimerId = null;
+            }
+
+            toast.classList.remove('is-visible');
+            toastHideTimerId = window.setTimeout(() => {
+                toast.hidden = true;
+                toastHideTimerId = null;
+            }, 240);
+        };
+
+        const showToast = () => {
+            if (!toast) return;
+            if (toastTimerId !== null) {
+                window.clearTimeout(toastTimerId);
+                toastTimerId = null;
+            }
+            if (toastHideTimerId !== null) {
+                window.clearTimeout(toastHideTimerId);
+                toastHideTimerId = null;
+            }
+
+            toast.hidden = false;
+            window.requestAnimationFrame(() => {
+                toast.classList.add('is-visible');
+            });
+
+            toastTimerId = window.setTimeout(() => {
+                toastTimerId = null;
+                hideToast();
+            }, 2400);
+        };
+
+        if (toast) {
+            toast.addEventListener('click', hideToast);
+        }
+
+        const getApiBase = () => {
+            const fromAttr = form.getAttribute('data-api-base');
+            if (fromAttr) return fromAttr.replace(/\/+$/, '');
+
+            const host = window.location.hostname;
+            const isLocal = host === 'localhost' || host === '127.0.0.1';
+            if (window.location.protocol === 'file:' || isLocal) return `http://${host || '127.0.0.1'}:5000`;
+            return '';
+        };
+
+        const submit = async () => {
+            if (sending) return;
+
+            const name = String(form.querySelector('#contact-name')?.value || '').trim();
+            const email = String(form.querySelector('#contact-email')?.value || '').trim();
+            const message = String(form.querySelector('#contact-message')?.value || '').trim();
+
+            if (!name || !email || !message) {
+                window.alert('Please fill in name, email, and message.');
+                return;
+            }
+
+            sending = true;
+            button.disabled = true;
+            button.textContent = 'Sending...';
+
+            try {
+                const base = getApiBase();
+                const res = await fetch(`${base}/api/contact`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, message }),
+                });
+
+                if (!res.ok) {
+                    throw new Error(`Request failed (${res.status})`);
+                }
+
+                form.reset();
+                showToast();
+                button.textContent = 'Sent';
+                window.setTimeout(() => {
+                    button.textContent = originalLabel;
+                }, 1400);
+            } catch {
+                window.alert('Failed to send. Make sure the backend is running on port 5000.');
+                button.textContent = originalLabel;
+            } finally {
+                sending = false;
+                button.disabled = false;
+            }
+        };
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            submit();
+        });
+
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            submit();
+        });
+    };
+
     setupExperienceCarousel();
     setupSectionNav();
     setupProjectModal();
+    setupContactForm();
 })();
